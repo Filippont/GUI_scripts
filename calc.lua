@@ -16,7 +16,7 @@ screenGui.ResetOnSpawn = false
 
 -- Главное окно
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 420, 0, 420)
+frame.Size = UDim2.new(0, 320, 0, 420)
 frame.Position = UDim2.new(0.5, -160, 0.25, 0)
 frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 frame.BackgroundTransparency = 0
