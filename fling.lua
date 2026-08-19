@@ -115,7 +115,7 @@ local power = 100
 
 -- Функция обновления силы
 local function updatePower(value)
-    power = math.clamp(value, 10, 500)
+    power = math.clamp(value, 10, 1000)
     sliderFill.Size = UDim2.new((power - 10) / 490, 0, 1, 0)
     powerLabel.Text = "Сила: " .. math.floor(power)
 end
