@@ -815,7 +815,7 @@ local keyMap = {
     [Enum.KeyCode.KeypadSeven] = "7",
     [Enum.KeyCode.KeypadEight] = "8",
     [Enum.KeyCode.KeypadNine] = "9",
-    [Enum.KeyCode.Backspace] = "⌫",
+    [Enum.KeyCode.Backspace] = "DEL",
     [Enum.KeyCode.Delete] = "C",
     [Enum.KeyCode.Return] = "=",
     [Enum.KeyCode.KeypadEnter] = "=",
