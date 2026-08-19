@@ -1,16 +1,22 @@
--- ===== ФЛИНГ СЕБЯ (GUI) ДЛЯ XENO — КНОПКИ + И - =====
+-- ===== ФЛИНГ СЕБЯ (GUI) — ИСПРАВЛЕННАЯ ВЕРСИЯ =====
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local UserInputService = game:GetService("UserInputService")
 
--- Удаляем старый GUI, если есть
+-- Удаляем старый GUI
 pcall(function()
-    player.PlayerGui:FindFirstChild("FlingSelfGUI"):Destroy()
+    if player and player.PlayerGui then
+        local old = player.PlayerGui:FindFirstChild("FlingSelfGUI")
+        if old then old:Destroy() end
+    end
 end)
 
--- Переменные состояния
-local hum = nil
-local oldPlatform = false
+-- Переменные
+local power = 100
+local minPower = 10
+local maxPower = 1000
+local step = 100
+local isFlying = false
 
 -- Создаём GUI
 local screenGui = Instance.new("ScreenGui")
@@ -77,7 +83,7 @@ statusLabel.Font = Enum.Font.GothamBold
 statusLabel.TextXAlignment = Enum.TextXAlignment.Center
 statusLabel.Parent = frame
 
--- Кнопка -
+-- Кнопка "-"
 local minusBtn = Instance.new("TextButton")
 minusBtn.Size = UDim2.new(0, 40, 0, 30)
 minusBtn.Position = UDim2.new(0, 15, 0, 0.45)
@@ -87,21 +93,24 @@ minusBtn.TextSize = 18
 minusBtn.Font = Enum.Font.GothamBold
 minusBtn.Text = "−"
 minusBtn.Parent = frame
-corner(minusBtn, 8)
 
--- Сила
+local minusCorner = Instance.new("UICorner")
+minusCorner.CornerRadius = UDim.new(0, 8)
+minusCorner.Parent = minusBtn
+
+-- Текст силы
 local powerLabel = Instance.new("TextLabel")
 powerLabel.Size = UDim2.new(0.5, 0, 0.15, 0)
 powerLabel.Position = UDim2.new(0.25, 0, 0.45, 0)
 powerLabel.BackgroundTransparency = 1
-powerLabel.Text = "Сила: 100"
+powerLabel.Text = "Сила: " .. power
 powerLabel.TextColor3 = Color3.fromRGB(200, 200, 255)
 powerLabel.TextSize = 14
 powerLabel.Font = Enum.Font.GothamBold
 powerLabel.TextXAlignment = Enum.TextXAlignment.Center
 powerLabel.Parent = frame
 
--- Кнопка +
+-- Кнопка "+"
 local plusBtn = Instance.new("TextButton")
 plusBtn.Size = UDim2.new(0, 40, 0, 30)
 plusBtn.Position = UDim2.new(1, -55, 0, 0.45)
@@ -111,9 +120,12 @@ plusBtn.TextSize = 18
 plusBtn.Font = Enum.Font.GothamBold
 plusBtn.Text = "+"
 plusBtn.Parent = frame
-corner(plusBtn, 8)
 
--- Кнопка ФЛИНГ
+local plusCorner = Instance.new("UICorner")
+plusCorner.CornerRadius = UDim.new(0, 8)
+plusCorner.Parent = plusBtn
+
+-- Кнопка "ФЛИНГ"
 local flingBtn = Instance.new("TextButton")
 flingBtn.Size = UDim2.new(0.8, 0, 0.18, 0)
 flingBtn.Position = UDim2.new(0.1, 0, 0.70, 0)
@@ -123,65 +135,18 @@ flingBtn.TextColor3 = Color3.new(1, 1, 1)
 flingBtn.Font = Enum.Font.GothamBold
 flingBtn.TextSize = 14
 flingBtn.Parent = frame
-corner(flingBtn, 8)
 
-flingBtn.MouseEnter:Connect(function()
-    flingBtn.BackgroundColor3 = Color3.fromRGB(230, 60, 60)
-end)
+local flingCorner = Instance.new("UICorner")
+flingCorner.CornerRadius = UDim.new(0, 8)
+flingCorner.Parent = flingBtn
 
-flingBtn.MouseLeave:Connect(function()
-    flingBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-end)
-
--- ===== ПЕРЕМЕННАЯ СИЛЫ =====
-local power = 100
-local minPower = 10
-local maxPower = 1000
-local step = 100
-
-local function updatePowerLabel()
+-- ===== ФУНКЦИИ =====
+local function updatePower()
+    power = math.clamp(power, minPower, maxPower)
     powerLabel.Text = "Сила: " .. power
 end
 
--- Кнопка -
-minusBtn.MouseButton1Click:Connect(function()
-    power = math.max(power - step, minPower)
-    updatePowerLabel()
-end)
-
--- Кнопка +
-plusBtn.MouseButton1Click:Connect(function()
-    power = math.min(power + step, maxPower)
-    updatePowerLabel()
-end)
-
--- ===== ФУНКЦИЯ ВСТАТЬ =====
-local function standUp()
-    local char = player.Character
-    if not char then return end
-
-    local humanoid = char:FindFirstChild("Humanoid")
-    if not humanoid then return end
-
-    humanoid.PlatformStand = false
-    humanoid.AutoRotate = true
-
-    statusLabel.Text = "🔴 НАЖМИ ФЛИНГ"
-    statusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
-
-    print("✅ Встал по пробелу!")
-end
-
--- ===== ОБРАБОТЧИК ПРОБЕЛА =====
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed then return end
-    if input.KeyCode == Enum.KeyCode.Space then
-        standUp()
-    end
-end)
-
--- ===== ФУНКЦИЯ ФЛИНГА =====
-local function flingSelf(powerValue)
+local function flingSelf()
     local char = player.Character
     if not char then
         warn("❌ Персонаж не найден!")
@@ -199,23 +164,56 @@ local function flingSelf(powerValue)
 
     local cam = workspace.CurrentCamera
     local dir = cam.CFrame.LookVector * 0.5 + Vector3.new(0, 0.8, 0)
-    root.AssemblyLinearVelocity = dir * powerValue
+    root.AssemblyLinearVelocity = dir * power
 
     statusLabel.Text = "🟢 ЛЕТИМ!"
     statusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
 
-    print("✅ Флингнут СЕБЯ с силой " .. powerValue)
+    print("✅ Флингнут СЕБЯ с силой " .. power)
     print("📌 Нажми ПРОБЕЛ, чтобы встать")
 end
 
-flingBtn.MouseButton1Click:Connect(function()
-    flingSelf(power)
+local function standUp()
+    local char = player.Character
+    if not char then return end
+
+    local humanoid = char:FindFirstChild("Humanoid")
+    if not humanoid then return end
+
+    humanoid.PlatformStand = false
+    humanoid.AutoRotate = true
+
+    statusLabel.Text = "🔴 НАЖМИ ФЛИНГ"
+    statusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+
+    print("✅ Встал по пробелу!")
+end
+
+-- ===== СОБЫТИЯ =====
+minusBtn.MouseButton1Click:Connect(function()
+    power = power - step
+    updatePower()
 end)
 
--- Обновляем метку силы при старте
-updatePowerLabel()
+plusBtn.MouseButton1Click:Connect(function()
+    power = power + step
+    updatePower()
+end)
+
+flingBtn.MouseButton1Click:Connect(function()
+    flingSelf()
+end)
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.Space then
+        standUp()
+    end
+end)
+
+-- Обновляем при старте
+updatePower()
 
 print("✅ Fling загружен!")
 print("📌 Кнопки + и - меняют силу с шагом 100 (от 10 до 1000)")
-print("📌 После флинга PlatformStand включён, пока не нажмёшь ПРОБЕЛ")
-print("📌 Можно нажимать ФЛИНГ снова и снова — будешь подбрасываться!")
+print("📌 После флинга нажми ПРОБЕЛ, чтобы встать")
