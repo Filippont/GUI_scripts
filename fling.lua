@@ -1,4 +1,4 @@
--- ===== ФЛИНГ СЕБЯ (GUI) ДЛЯ XENO — ИСПРАВЛЕННЫЙ =====
+-- ===== ФЛИНГ СЕБЯ (GUI) ДЛЯ XENO — КНОПКИ + И - =====
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local UserInputService = game:GetService("UserInputService")
@@ -20,8 +20,8 @@ screenGui.ResetOnSpawn = false
 
 -- Главное окно
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 200, 0, 140)
-frame.Position = UDim2.new(0.5, -100, 0.6, 0)
+frame.Size = UDim2.new(0, 220, 0, 160)
+frame.Position = UDim2.new(0.5, -110, 0.6, 0)
 frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 frame.BackgroundTransparency = 0
 frame.BorderSizePixel = 0
@@ -77,63 +77,41 @@ statusLabel.Font = Enum.Font.GothamBold
 statusLabel.TextXAlignment = Enum.TextXAlignment.Center
 statusLabel.Parent = frame
 
--- Ползунок силы
+-- Кнопка -
+local minusBtn = Instance.new("TextButton")
+minusBtn.Size = UDim2.new(0, 40, 0, 30)
+minusBtn.Position = UDim2.new(0, 15, 0, 0.45)
+minusBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 70)
+minusBtn.TextColor3 = Color3.new(1, 1, 1)
+minusBtn.TextSize = 18
+minusBtn.Font = Enum.Font.GothamBold
+minusBtn.Text = "−"
+minusBtn.Parent = frame
+corner(minusBtn, 8)
+
+-- Сила
 local powerLabel = Instance.new("TextLabel")
-powerLabel.Size = UDim2.new(0.8, 0, 0.15, 0)
-powerLabel.Position = UDim2.new(0.1, 0, 0.42, 0)
+powerLabel.Size = UDim2.new(0.5, 0, 0.15, 0)
+powerLabel.Position = UDim2.new(0.25, 0, 0.45, 0)
 powerLabel.BackgroundTransparency = 1
 powerLabel.Text = "Сила: 100"
 powerLabel.TextColor3 = Color3.fromRGB(200, 200, 255)
-powerLabel.TextSize = 13
-powerLabel.Font = Enum.Font.Gotham
+powerLabel.TextSize = 14
+powerLabel.Font = Enum.Font.GothamBold
 powerLabel.TextXAlignment = Enum.TextXAlignment.Center
 powerLabel.Parent = frame
 
-local powerSlider = Instance.new("Frame")
-powerSlider.Size = UDim2.new(0.8, 0, 0.06, 0)
-powerSlider.Position = UDim2.new(0.1, 0, 0.60, 0)
-powerSlider.BackgroundColor3 = Color3.fromRGB(60, 60, 70)
-powerSlider.BorderSizePixel = 0
-powerSlider.Parent = frame
-
-local sliderCorner = Instance.new("UICorner")
-sliderCorner.CornerRadius = UDim.new(0, 4)
-sliderCorner.Parent = powerSlider
-
-local sliderFill = Instance.new("Frame")
-sliderFill.Size = UDim2.new(0.5, 0, 1, 0)
-sliderFill.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
-sliderFill.BorderSizePixel = 0
-sliderFill.Parent = powerSlider
-
-local sliderCornerFill = Instance.new("UICorner")
-sliderCornerFill.CornerRadius = UDim.new(0, 4)
-sliderCornerFill.Parent = sliderFill
-
--- Переменная силы
-local power = 100
-
--- Функция обновления силы
-local function updatePower(value)
-    power = math.clamp(value, 10, 500)
-    sliderFill.Size = UDim2.new((power - 10) / 490, 0, 1, 0)
-    powerLabel.Text = "Сила: " .. math.floor(power)
-end
-
--- Обработка клика по ползунку
-powerSlider.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        local x = (input.Position.X - powerSlider.AbsolutePosition.X) / powerSlider.AbsoluteSize.X
-        updatePower(10 + x * 490)
-    end
-end)
-
-powerSlider.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement and input.UserInputState == Enum.UserInputState.Change then
-        local x = (input.Position.X - powerSlider.AbsolutePosition.X) / powerSlider.AbsoluteSize.X
-        updatePower(10 + x * 490)
-    end
-end)
+-- Кнопка +
+local plusBtn = Instance.new("TextButton")
+plusBtn.Size = UDim2.new(0, 40, 0, 30)
+plusBtn.Position = UDim2.new(1, -55, 0, 0.45)
+plusBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 70)
+plusBtn.TextColor3 = Color3.new(1, 1, 1)
+plusBtn.TextSize = 18
+plusBtn.Font = Enum.Font.GothamBold
+plusBtn.Text = "+"
+plusBtn.Parent = frame
+corner(plusBtn, 8)
 
 -- Кнопка ФЛИНГ
 local flingBtn = Instance.new("TextButton")
@@ -145,10 +123,7 @@ flingBtn.TextColor3 = Color3.new(1, 1, 1)
 flingBtn.Font = Enum.Font.GothamBold
 flingBtn.TextSize = 14
 flingBtn.Parent = frame
-
-local flingCorner = Instance.new("UICorner")
-flingCorner.CornerRadius = UDim.new(0, 8)
-flingCorner.Parent = flingBtn
+corner(flingBtn, 8)
 
 flingBtn.MouseEnter:Connect(function()
     flingBtn.BackgroundColor3 = Color3.fromRGB(230, 60, 60)
@@ -156,6 +131,28 @@ end)
 
 flingBtn.MouseLeave:Connect(function()
     flingBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+end)
+
+-- ===== ПЕРЕМЕННАЯ СИЛЫ =====
+local power = 100
+local minPower = 10
+local maxPower = 1000
+local step = 100
+
+local function updatePowerLabel()
+    powerLabel.Text = "Сила: " .. power
+end
+
+-- Кнопка -
+minusBtn.MouseButton1Click:Connect(function()
+    power = math.max(power - step, minPower)
+    updatePowerLabel()
+end)
+
+-- Кнопка +
+plusBtn.MouseButton1Click:Connect(function()
+    power = math.min(power + step, maxPower)
+    updatePowerLabel()
 end)
 
 -- ===== ФУНКЦИЯ ВСТАТЬ =====
@@ -215,4 +212,10 @@ flingBtn.MouseButton1Click:Connect(function()
     flingSelf(power)
 end)
 
+-- Обновляем метку силы при старте
+updatePowerLabel()
+
 print("✅ Fling загружен!")
+print("📌 Кнопки + и - меняют силу с шагом 100 (от 10 до 1000)")
+print("📌 После флинга PlatformStand включён, пока не нажмёшь ПРОБЕЛ")
+print("📌 Можно нажимать ФЛИНГ снова и снова — будешь подбрасываться!")
