@@ -1,4 +1,4 @@
--- ===== ИНЖЕНЕРНЫЙ КАЛЬКУЛЯТОР ДЛЯ XENO =====
+-- ===== ИНЖЕНЕРНЫЙ КАЛЬКУЛЯТОР ДЛЯ XENO (ИСПРАВЛЕННЫЙ) =====
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local UserInputService = game:GetService("UserInputService")
@@ -160,14 +160,12 @@ local function pressButton(value)
         if operation and currentInput ~= "" then
             local num = tonumber(currentInput)
             if num then
-                local prevResult = result
-                local op = operation
-                local newResult = calculate(result, op, num)
+                local newResult = calculate(result, operation, num)
                 if newResult == nil then
                     display.Text = "Ошибка"
                     return
                 end
-                history = tostring(result) .. " " .. op .. " " .. tostring(num) .. " = " .. tostring(newResult)
+                history = tostring(result) .. " " .. operation .. " " .. tostring(num) .. " = " .. tostring(newResult)
                 currentInput = tostring(newResult)
                 result = newResult
                 operation = nil
@@ -345,13 +343,15 @@ createButton("*", 0.475, 0.71, 0.14, 0.08)
 createButton("-", 0.625, 0.71, 0.14, 0.08)
 createButton("+", 0.775, 0.71, 0.14, 0.08)
 
--- Седьмая строка
+-- Седьмая строка (исправлена)
 createButton("4", 0.025, 0.80, 0.14, 0.08)
 createButton("5", 0.175, 0.80, 0.14, 0.08)
 createButton("6", 0.325, 0.80, 0.14, 0.08)
 createButton("=", 0.475, 0.80, 0.30, 0.08)
-createButton("0", 0.025, 0.89, 0.30, 0.08)
-createButton(".", 0.325, 0.89, 0.14, 0.08)
+
+-- Восьмая строка (исправлена)
+createButton("0", 0.025, 0.89, 0.20, 0.08)
+createButton(".", 0.235, 0.89, 0.14, 0.08)
 createButton("=", 0.475, 0.89, 0.30, 0.08)
 
 -- ===== ГОРЯЧИЕ КЛАВИШИ =====
