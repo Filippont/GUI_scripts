@@ -8,8 +8,8 @@ screenGui.Parent = player:WaitForChild("PlayerGui")
 screenGui.ResetOnSpawn = false
 
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 400, 0, 80)
-frame.Position = UDim2.new(0.5, -200, 0.9, 0)
+frame.Size = UDim2.new(0, 530, 0, 80)
+frame.Position = UDim2.new(0.5, -265, 0.9, 0)
 frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 frame.BackgroundTransparency = 0
 frame.BorderSizePixel = 0
@@ -28,7 +28,7 @@ local function createButton(text, xPos, callback)
     btn.Position = UDim2.new(0, xPos, 0.5, -25)
     btn.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
     btn.TextColor3 = Color3.new(1, 1, 1)
-    btn.TextSize = 13
+    btn.TextSize = 12
     btn.Font = Enum.Font.GothamBold
     btn.Text = text
     btn.BorderSizePixel = 0
@@ -63,6 +63,11 @@ end)
 -- Кнопка 3: Fling
 createButton("💥 Fling", 270, function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Filippont/GUI_scripts/master/fling.lua"))()
+end)
+
+-- Кнопка 4: Калькулятор
+createButton("🧮 Калькулятор", 395, function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Filippont/GUI_scripts/master/calc.lua"))()
 end)
 
 -- Кнопка Закрыть (❌)
