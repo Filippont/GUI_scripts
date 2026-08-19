@@ -66,8 +66,7 @@ frameStroke.Thickness = 2
 frameStroke.Parent = frame
 
 -- =========================================================
--- ЗАКРЫТИЕ: рисуем X линиями, а не Unicode "❌",
--- чтобы крестик не ломался на шрифтах Roblox.
+-- ЗАКРЫТИЕ
 -- =========================================================
 
 local function round(object, radius)
@@ -373,22 +372,6 @@ end
 -- ВВОД
 -- =========================================================
 
-local function canAppendDigit(text, digit)
-    if #text >= MAX_DIGITS then
-        return false
-    end
-
-    if text == "0" then
-        return digit == "0" and false or true
-    end
-
-    if text == "-0" then
-        return digit ~= "0"
-    end
-
-    return true
-end
-
 local function appendDigit(digit)
     clearError()
 
@@ -550,6 +533,37 @@ local function pressEquals()
     end
 end
 
+-- =========================================================
+-- УНИФИЦИРОВАННАЯ ФУНКЦИЯ УДАЛЕНИЯ (для DEL и Backspace)
+-- =========================================================
+
+local function deleteLastChar()
+    if errorState then
+        clearError()
+        return
+    end
+
+    if isNewInput then
+        return
+    end
+
+    if #currentInput <= 1 then
+        currentInput = "0"
+        isNewInput = true
+    else
+        currentInput = currentInput:sub(1, -2)
+        if currentInput == "-" then
+            currentInput = "0"
+            isNewInput = true
+        end
+    end
+    updateDisplay()
+end
+
+-- =========================================================
+-- pressButton
+-- =========================================================
+
 local function pressButton(value)
     if value == "C" then
         currentInput = "0"
@@ -572,6 +586,11 @@ local function pressButton(value)
         return
     end
 
+    if value == "DEL" or value == "⌫" then
+        deleteLastChar()
+        return
+    end
+
     if errorState then
         if value:match("^%d$") or value == "." or value == "π" or value == "e" then
             clearError()
@@ -586,15 +605,6 @@ local function pressButton(value)
         appendDecimal()
     elseif value == "EXP" then
         appendExponent()
-    elseif value == "⌫" then
-        if isNewInput then
-            currentInput = "0"
-        else
-            currentInput = currentInput:sub(1, -2)
-            if currentInput == "" or currentInput == "-" then
-                currentInput = "0"
-            end
-        end
     elseif value == "=" then
         pressEquals()
         return
@@ -763,7 +773,7 @@ end
 -- Нижний блок.
 createButton("C", 0.025, 0.575, 0.14, 0.07, Color3.fromRGB(85, 52, 52))
 createButton("CE", 0.175, 0.575, 0.14, 0.07)
-createButton("DEL", 0.325, 0.575, 0.14, 0.07)
+createButton("DEL", 0.325, 0.575, 0.14, 0.07)  -- <-- КНОПКА DEL
 createButton("/", 0.475, 0.575, 0.14, 0.07)
 createButton("^", 0.625, 0.575, 0.14, 0.07)
 createButton("%", 0.775, 0.575, 0.14, 0.07)
@@ -782,14 +792,13 @@ createButton("1", 0.475, 0.735, 0.14, 0.07, COLORS.number)
 createButton("2", 0.625, 0.735, 0.14, 0.07, COLORS.number)
 createButton("3", 0.775, 0.735, 0.14, 0.07, COLORS.number)
 
--- ===== НИЖНЯЯ СТРОКА (ИСПРАВЛЕНА) =====
--- Убрал кнопку "±" внизу и расширил "="
+-- Нижняя строка
 createButton("0", 0.025, 0.815, 0.30, 0.07, COLORS.number)
 createButton(".", 0.325, 0.815, 0.14, 0.07)
 createButton("=", 0.475, 0.815, 0.44, 0.07, Color3.fromRGB(60, 95, 115))
 
 -- =========================================================
--- КЛАВИАТУРА
+-- КЛАВИАТУРА (исправлена)
 -- =========================================================
 
 local keyMap = {
@@ -813,8 +822,8 @@ local keyMap = {
     [Enum.KeyCode.KeypadSeven] = "7",
     [Enum.KeyCode.KeypadEight] = "8",
     [Enum.KeyCode.KeypadNine] = "9",
-    [Enum.KeyCode.Backspace] = "DEL",
-    [Enum.KeyCode.Delete] = "C",
+    [Enum.KeyCode.Backspace] = "DEL",   -- <-- БЕКСПЕЙС ТЕПЕРЬ РАБОТАЕТ КАК DEL
+    [Enum.KeyCode.Delete] = "DEL",      -- <-- DELETE ТОЖЕ
     [Enum.KeyCode.Return] = "=",
     [Enum.KeyCode.KeypadEnter] = "=",
     [Enum.KeyCode.KeypadPlus] = "+",
