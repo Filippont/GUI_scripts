@@ -765,7 +765,7 @@ end
 -- Нижний блок.
 createButton("C", 0.025, 0.575, 0.14, 0.07, Color3.fromRGB(85, 52, 52))
 createButton("CE", 0.175, 0.575, 0.14, 0.07)
-createButton("⌫", 0.325, 0.575, 0.14, 0.07)
+createButton("DEL", 0.325, 0.575, 0.14, 0.07)
 createButton("/", 0.475, 0.575, 0.14, 0.07)
 createButton("^", 0.625, 0.575, 0.14, 0.07)
 createButton("%", 0.775, 0.575, 0.14, 0.07)
