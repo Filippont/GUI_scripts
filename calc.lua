@@ -268,11 +268,11 @@ end
 -- ===== СОЗДАНИЕ КНОПОК =====
 local function createButton(text, x, y, w, h)
     local btn = Instance.new("TextButton")
-    btn.Size = UDim2.new(w or 0.2, 0, h or 0.08, 0)
+    btn.Size = UDim2.new(w or 0.14, 0, h or 0.07, 0)
     btn.Position = UDim2.new(x, 0, y, 0)
     btn.Text = text
     btn.TextColor3 = Color3.new(1, 1, 1)
-    btn.TextSize = 13
+    btn.TextSize = 12
     btn.Font = Enum.Font.GothamBold
     btn.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
     btn.BorderSizePixel = 0
@@ -295,64 +295,70 @@ local function createButton(text, x, y, w, h)
     return btn
 end
 
--- Первая строка (научные функции)
-createButton("sin", 0.025, 0.28, 0.14, 0.07)
-createButton("cos", 0.175, 0.28, 0.14, 0.07)
-createButton("tan", 0.325, 0.28, 0.14, 0.07)
-createButton("ln", 0.475, 0.28, 0.14, 0.07)
-createButton("log", 0.625, 0.28, 0.14, 0.07)
-createButton("!", 0.775, 0.28, 0.14, 0.07)
+-- Первая строка
+createButton("sin", 0.025, 0.28, 0.14)
+createButton("cos", 0.175, 0.28, 0.14)
+createButton("tan", 0.325, 0.28, 0.14)
+createButton("ln", 0.475, 0.28, 0.14)
+createButton("log", 0.625, 0.28, 0.14)
+createButton("!", 0.775, 0.28, 0.14)
 
 -- Вторая строка
-createButton("asin", 0.025, 0.365, 0.14, 0.07)
-createButton("acos", 0.175, 0.365, 0.14, 0.07)
-createButton("atan", 0.325, 0.365, 0.14, 0.07)
-createButton("sinh", 0.475, 0.365, 0.14, 0.07)
-createButton("cosh", 0.625, 0.365, 0.14, 0.07)
-createButton("tanh", 0.775, 0.365, 0.14, 0.07)
+createButton("asin", 0.025, 0.36, 0.14)
+createButton("acos", 0.175, 0.36, 0.14)
+createButton("atan", 0.325, 0.36, 0.14)
+createButton("sinh", 0.475, 0.36, 0.14)
+createButton("cosh", 0.625, 0.36, 0.14)
+createButton("tanh", 0.775, 0.36, 0.14)
 
 -- Третья строка
-createButton("x²", 0.025, 0.45, 0.14, 0.07)
-createButton("√", 0.175, 0.45, 0.14, 0.07)
-createButton("1/x", 0.325, 0.45, 0.14, 0.07)
-createButton("π", 0.475, 0.45, 0.14, 0.07)
-createButton("e", 0.625, 0.45, 0.14, 0.07)
-createButton("EXP", 0.775, 0.45, 0.14, 0.07)
+createButton("x²", 0.025, 0.44, 0.14)
+createButton("√", 0.175, 0.44, 0.14)
+createButton("1/x", 0.325, 0.44, 0.14)
+createButton("π", 0.475, 0.44, 0.14)
+createButton("e", 0.625, 0.44, 0.14)
+createButton("EXP", 0.775, 0.44, 0.14)
 
 -- Четвёртая строка (память)
-createButton("MC", 0.025, 0.535, 0.14, 0.07)
-createButton("MR", 0.175, 0.535, 0.14, 0.07)
-createButton("MS", 0.325, 0.535, 0.14, 0.07)
-createButton("M+", 0.475, 0.535, 0.14, 0.07)
-createButton("M-", 0.625, 0.535, 0.14, 0.07)
-createButton("±", 0.775, 0.535, 0.14, 0.07)
+createButton("MC", 0.025, 0.52, 0.14)
+createButton("MR", 0.175, 0.52, 0.14)
+createButton("MS", 0.325, 0.52, 0.14)
+createButton("M+", 0.475, 0.52, 0.14)
+createButton("M-", 0.625, 0.52, 0.14)
+createButton("±", 0.775, 0.52, 0.14)
 
 -- Пятая строка
-createButton("C", 0.025, 0.62, 0.14, 0.08)
-createButton("CE", 0.175, 0.62, 0.14, 0.08)
-createButton("⌫", 0.325, 0.62, 0.14, 0.08)
-createButton("/", 0.475, 0.62, 0.14, 0.08)
-createButton("^", 0.625, 0.62, 0.14, 0.08)
-createButton("%", 0.775, 0.62, 0.14, 0.08)
+createButton("C", 0.025, 0.60, 0.14, 0.08)
+createButton("CE", 0.175, 0.60, 0.14, 0.08)
+createButton("⌫", 0.325, 0.60, 0.14, 0.08)
+createButton("/", 0.475, 0.60, 0.14, 0.08)
+createButton("^", 0.625, 0.60, 0.14, 0.08)
+createButton("%", 0.775, 0.60, 0.14, 0.08)
 
 -- Шестая строка
-createButton("7", 0.025, 0.71, 0.14, 0.08)
-createButton("8", 0.175, 0.71, 0.14, 0.08)
-createButton("9", 0.325, 0.71, 0.14, 0.08)
-createButton("*", 0.475, 0.71, 0.14, 0.08)
-createButton("-", 0.625, 0.71, 0.14, 0.08)
-createButton("+", 0.775, 0.71, 0.14, 0.08)
+createButton("7", 0.025, 0.69, 0.14, 0.08)
+createButton("8", 0.175, 0.69, 0.14, 0.08)
+createButton("9", 0.325, 0.69, 0.14, 0.08)
+createButton("*", 0.475, 0.69, 0.14, 0.08)
+createButton("-", 0.625, 0.69, 0.14, 0.08)
+createButton("+", 0.775, 0.69, 0.14, 0.08)
 
--- Седьмая строка (исправлена)
-createButton("4", 0.025, 0.80, 0.14, 0.08)
-createButton("5", 0.175, 0.80, 0.14, 0.08)
-createButton("6", 0.325, 0.80, 0.14, 0.08)
-createButton("=", 0.475, 0.80, 0.30, 0.08)
+-- Седьмая строка
+createButton("4", 0.025, 0.78, 0.14, 0.08)
+createButton("5", 0.175, 0.78, 0.14, 0.08)
+createButton("6", 0.325, 0.78, 0.14, 0.08)
+createButton("=", 0.475, 0.78, 0.30, 0.08)
 
--- Восьмая строка (исправлена)
-createButton("0", 0.025, 0.89, 0.20, 0.08)
-createButton(".", 0.235, 0.89, 0.14, 0.08)
-createButton("=", 0.475, 0.89, 0.30, 0.08)
+-- Восьмая строка
+createButton("1", 0.025, 0.87, 0.14, 0.08)
+createButton("2", 0.175, 0.87, 0.14, 0.08)
+createButton("3", 0.325, 0.87, 0.14, 0.08)
+createButton("=", 0.475, 0.87, 0.30, 0.08)
+
+-- Девятая строка
+createButton("0", 0.025, 0.96, 0.30, 0.08)
+createButton(".", 0.335, 0.96, 0.14, 0.08)
+createButton("=", 0.485, 0.96, 0.30, 0.08)
 
 -- ===== ГОРЯЧИЕ КЛАВИШИ =====
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
@@ -380,4 +386,3 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 end)
 
 print("✅ Инженерный калькулятор загружен!")
-print("📌 Доступны: sin, cos, tan, ln, log, √, x², 1/x, π, e, EXP, память (MC/MR/MS/M+/M-)")
