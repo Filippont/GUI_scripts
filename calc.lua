@@ -1,4 +1,4 @@
--- ===== ИНЖЕНЕРНЫЙ КАЛЬКУЛЯТОР ДЛЯ XENO (ФИНАЛ) =====
+-- ===== ИНЖЕНЕРНЫЙ КАЛЬКУЛЯТОР ДЛЯ XENO (ОДНА "=") =====
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local UserInputService = game:GetService("UserInputService")
@@ -13,8 +13,8 @@ screenGui.Parent = player:WaitForChild("PlayerGui")
 screenGui.ResetOnSpawn = false
 
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 320, 0, 440)
-frame.Position = UDim2.new(0.5, -160, 0.2, 0)
+frame.Size = UDim2.new(0, 320, 0, 460)
+frame.Position = UDim2.new(0.5, -160, 0.15, 0)
 frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 frame.BackgroundTransparency = 0
 frame.BorderSizePixel = 0
@@ -31,7 +31,6 @@ stroke.Color = Color3.fromRGB(100, 200, 255)
 stroke.Thickness = 2
 stroke.Parent = frame
 
--- Заголовок
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0.05, 0)
 title.Position = UDim2.new(0, 0, 0, 0)
@@ -56,7 +55,6 @@ closeBtn.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
 
--- Дисплей
 local display = Instance.new("TextBox")
 display.Size = UDim2.new(0.9, 0, 0.1, 0)
 display.Position = UDim2.new(0.05, 0, 0.07, 0)
@@ -339,18 +337,16 @@ createButton("+", 0.775, 0.65, 0.14, 0.08)
 createButton("4", 0.025, 0.74, 0.14, 0.08)
 createButton("5", 0.175, 0.74, 0.14, 0.08)
 createButton("6", 0.325, 0.74, 0.14, 0.08)
-createButton("=", 0.475, 0.74, 0.30, 0.08)
+createButton("1", 0.475, 0.74, 0.14, 0.08)
+createButton("2", 0.625, 0.74, 0.14, 0.08)
+createButton("3", 0.775, 0.74, 0.14, 0.08)
 
 -- 8 строка
-createButton("1", 0.025, 0.83, 0.14, 0.08)
-createButton("2", 0.175, 0.83, 0.14, 0.08)
-createButton("3", 0.325, 0.83, 0.14, 0.08)
-createButton("=", 0.475, 0.83, 0.30, 0.08)
+createButton("0", 0.175, 0.83, 0.30, 0.08)
+createButton(".", 0.475, 0.83, 0.14, 0.08)
 
--- 9 строка
-createButton("0", 0.025, 0.92, 0.30, 0.08)
-createButton(".", 0.335, 0.92, 0.14, 0.08)
-createButton("=", 0.485, 0.92, 0.30, 0.08)
+-- 9 строка (ОДНА КНОПКА "=")
+createButton("=", 0.025, 0.92, 0.90, 0.08)
 
 -- ===== ГОРЯЧИЕ КЛАВИШИ =====
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
